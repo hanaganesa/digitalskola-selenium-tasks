@@ -1,0 +1,100 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-08-07T10:39:10.322Z",
+    "end": "2025-08-07T10:39:19.827Z",
+    "duration": 9505,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "67c61c7e-11de-4ba6-8408-ff3e9d367958",
+      "title": "",
+      "fullFile": "D:\\learning\\try-sele\\tests\\sesi9-test.js",
+      "file": "\\tests\\sesi9-test.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "71f3a808-7f12-4f6f-a940-6494f25aba2d",
+          "title": "Saucedemo Test",
+          "fullFile": "D:\\learning\\try-sele\\tests\\sesi9-test.js",
+          "file": "\\tests\\sesi9-test.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Visit Saucedemo Website and Login",
+              "fullTitle": "Saucedemo Test Visit Saucedemo Website and Login",
+              "timedOut": false,
+              "duration": 9493,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "options = new firefox.Options();\noptions.addArguments('--incognito');\n// options.addArguments('--headless');\ndriver = await new Builder().forBrowser('firefox').setFirefoxOptions(options).build();\nawait driver.get('https://www.saucedemo.com');\n// inputs\nlet inputUsername = await driver.findElement(By.css('[data-test=\"username\"]'));\nlet inputPassword = await driver.findElement(By.css('[data-test=\"password\"]'));\nlet buttonLogin = await driver.findElement(By.css('[data-test=\"login-button\"]'));\n// actions\nawait inputUsername.sendKeys('standard_user');\nawait inputPassword.sendKeys('secret_sauce');\nawait buttonLogin.click();\n// wait 2 second for the page to load\nawait driver.sleep(2000); \n// assertions\ntry {\n    let item = await driver.findElement(By.css('[data-test=\"inventory-list\"]'));\n    let itemDisplayed = await item.isDisplayed();\n    assert.strictEqual(itemDisplayed, true, 'Item is not displayed');\n} catch (error) {\n    assert.fail('Login failed or item not displayed: ' + error.message);\n}\n// select dropdown\nlet sort = await driver.findElement(By.css('[data-test=\"product-sort-container\"]'));\nawait sort.click();\nlet selection = await driver.findElement(By.css('[data-test=\"product-sort-container\"] option[value=\"az\"]'));\nawait selection.click();\n// assertions after sorting\nlet sortedItems = await driver.findElements(By.css('[data-test=\"inventory-item-name\"]'));\nlet originalItemNames = [];\nfor (let item of sortedItems) {\n    originalItemNames.push(await item.getText());\n}\n// console.log(originalItemNames);\nlet sortedItemNames = originalItemNames.slice();\ntry {\n    assert.deepStrictEqual(originalItemNames, sortedItemNames, 'Items are not sorted correctly');\n} catch (error) {\n    assert.fail('ERROR: Items not sorted --> ' + error.message);\n}\nawait driver.quit();",
+              "err": {},
+              "uuid": "29bf80b8-c5fe-43dc-8faa-eb09946ff50c",
+              "parentUUID": "71f3a808-7f12-4f6f-a940-6494f25aba2d",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "29bf80b8-c5fe-43dc-8faa-eb09946ff50c"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 9493,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 60000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 60000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "11.7.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": null,
+      "version": "6.2.0"
+    }
+  }
+}
