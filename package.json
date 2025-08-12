@@ -1,16 +1,19 @@
 {
   "name": "try-sele",
   "version": "1.0.0",
+  "type": "module",
   "description": "Selenium Webdriver tests using Mocha with Mochawesome reports",
   "scripts": {
-    "test": "mocha tests/sesi10-test.js --recursive --timeout 60000 --reporter mochawesome"
+    "test": "mocha tests/sesi11-test.js --recursive --timeout 60000"
   },
   "dependencies": {
+    "pixelmatch": "^7.1.0",
+    "pngjs": "^7.0.0",
     "selenium-webdriver": "4.34.0"
   },
   "devDependencies": {
-    "mocha": "11.7.1",
-    "mochawesome": "7.1.3",
-    "mocha-simple-html-reporter": "2.0.0"
+    "mocha": "^11.7.1",
+    "mocha-simple-html-reporter": "2.0.0",
+    "mochawesome": "7.1.3"
   }
 }

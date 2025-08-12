@@ -1,137 +1,23 @@
 {
   "stats": {
-    "suites": 1,
-    "tests": 2,
-    "passes": 2,
+    "suites": 0,
+    "tests": 0,
+    "passes": 0,
     "pending": 0,
     "failures": 0,
-    "start": "2025-08-08T03:01:48.278Z",
-    "end": "2025-08-08T03:02:05.541Z",
-    "duration": 17263,
-    "testsRegistered": 2,
-    "passPercent": 100,
-    "pendingPercent": 0,
+    "start": "2025-08-11T09:30:25.038Z",
+    "end": "2025-08-11T09:30:25.039Z",
+    "duration": 1,
+    "testsRegistered": 0,
+    "passPercent": null,
+    "pendingPercent": null,
     "other": 0,
     "hasOther": false,
     "skipped": 0,
     "hasSkipped": false
   },
   "results": [
-    {
-      "uuid": "847e9a0c-9bd8-4636-a95b-98eccfae1101",
-      "title": "",
-      "fullFile": "D:\\learning\\try-sele\\tests\\sesi10-test.js",
-      "file": "\\tests\\sesi10-test.js",
-      "beforeHooks": [],
-      "afterHooks": [],
-      "tests": [],
-      "suites": [
-        {
-          "uuid": "f9591947-8e23-4b32-957c-4e60e826ef25",
-          "title": "Saucedemo Test",
-          "fullFile": "D:\\learning\\try-sele\\tests\\sesi10-test.js",
-          "file": "\\tests\\sesi10-test.js",
-          "beforeHooks": [
-            {
-              "title": "\"before each\" hook in \"Saucedemo Test\"",
-              "fullTitle": "Saucedemo Test \"before each\" hook in \"Saucedemo Test\"",
-              "timedOut": false,
-              "duration": 5436,
-              "state": null,
-              "speed": null,
-              "pass": false,
-              "fail": false,
-              "pending": false,
-              "context": null,
-              "code": "options = new firefox.Options();\noptions.addArguments('--incognito');\noptions.addArguments('--headless');\ndriver = await new Builder().forBrowser('firefox').setFirefoxOptions(options).build();\nawait driver.get('https://www.saucedemo.com');\n// inputs\nlet inputUsername = await driver.findElement(By.css('[data-test=\"username\"]'));\nlet inputPassword = await driver.findElement(By.css('[data-test=\"password\"]'));\nlet buttonLogin = await driver.findElement(By.css('[data-test=\"login-button\"]'));\n// actions\nawait inputUsername.sendKeys('standard_user');\nawait inputPassword.sendKeys('secret_sauce');\nawait buttonLogin.click();\n// wait 2 second for the page to load\nawait driver.sleep(2000); \n// assertions\ntry {\n    let item = await driver.findElement(By.css('[data-test=\"inventory-list\"]'));\n    let itemDisplayed = await item.isDisplayed();\n    assert.strictEqual(itemDisplayed, true, 'Item is not displayed');\n} catch (error) {\n    assert.fail('Login failed or item not displayed: ' + error.message);\n}",
-              "err": {},
-              "uuid": "86c9776f-200f-4bd3-ae70-bc9315092b9f",
-              "parentUUID": "f9591947-8e23-4b32-957c-4e60e826ef25",
-              "isHook": true,
-              "skipped": false
-            }
-          ],
-          "afterHooks": [
-            {
-              "title": "\"after each\" hook in \"Saucedemo Test\"",
-              "fullTitle": "Saucedemo Test \"after each\" hook in \"Saucedemo Test\"",
-              "timedOut": false,
-              "duration": 997,
-              "state": null,
-              "speed": null,
-              "pass": false,
-              "fail": false,
-              "pending": false,
-              "context": null,
-              "code": "await driver.quit();",
-              "err": {},
-              "uuid": "3bfa809d-65da-4395-8b3e-d8fe132467d8",
-              "parentUUID": "f9591947-8e23-4b32-957c-4e60e826ef25",
-              "isHook": true,
-              "skipped": false
-            }
-          ],
-          "tests": [
-            {
-              "title": "Sort Items A-Z in Saucedemo Inventory Page",
-              "fullTitle": "Saucedemo Test Sort Items A-Z in Saucedemo Inventory Page",
-              "timedOut": false,
-              "duration": 206,
-              "state": "passed",
-              "speed": "slow",
-              "pass": true,
-              "fail": false,
-              "pending": false,
-              "context": null,
-              "code": "// select dropdown\nlet sort = await driver.findElement(By.css('[data-test=\"product-sort-container\"]'));\nawait sort.click();\nlet selection = await driver.findElement(By.css('[data-test=\"product-sort-container\"] option[value=\"az\"]'));\nawait selection.click();\n// assertions - get items list\nlet sortedItems = await driver.findElements(By.css('[data-test=\"inventory-item-name\"]'));\nlet originalItemNames = [];\nfor (let item of sortedItems) {\n    originalItemNames.push(await item.getText());\n}\n// sort copied items and compare\nlet sortedItemNames = originalItemNames.slice();\ntry {\n    assert.deepStrictEqual(originalItemNames, sortedItemNames, 'Items are not sorted correctly');\n} catch (error) {\n    assert.fail('ERROR: Items not sorted --> ' + error.message);\n}",
-              "err": {},
-              "uuid": "c11fc6e9-33ea-4a5b-a4da-79d8256f2082",
-              "parentUUID": "f9591947-8e23-4b32-957c-4e60e826ef25",
-              "isHook": false,
-              "skipped": false
-            },
-            {
-              "title": "Check Out Item",
-              "fullTitle": "Saucedemo Test Check Out Item",
-              "timedOut": false,
-              "duration": 4581,
-              "state": "passed",
-              "speed": "slow",
-              "pass": true,
-              "fail": false,
-              "pending": false,
-              "context": null,
-              "code": "// add an item to the cart\nlet addToCartButton = await driver.findElement(By.css('[data-test=\"add-to-cart-test.allthethings()-t-shirt-(red)\"]'));\nawait addToCartButton.click();\n// assert item is added to cart\nlet cartBadge = await driver.findElement(By.css('[data-test=\"shopping-cart-badge\"]'));\nlet badgeText = await cartBadge.getText();\nassert.strictEqual(badgeText, '1', 'Item did not added to cart');\n// go to cart\nlet cartLink = await driver.findElement(By.css('[data-test=\"shopping-cart-link\"]'));\nawait cartLink.click();\n// wait 1 second for the page to load\nawait driver.sleep(1000);\n// assert cart page is displayed\nlet cartPageTitle = await driver.findElement(By.css('[data-test=\"title\"]'));\nlet cartTitleText = await cartPageTitle.getText();\nassert.strictEqual(cartTitleText, 'Your Cart', 'Failed accessing cart page');\n// proceed to checkout\nlet checkoutButton = await driver.findElement(By.css('[data-test=\"checkout\"]'));\nawait checkoutButton.click();\n// wait 1 second for the page to load\nawait driver.sleep(1000);\n// assert checkout information page is displayed\nlet checkoutPageTitle = await driver.findElement(By.css('[data-test=\"title\"]'));\nlet checkoutTitleText = await checkoutPageTitle.getText();\nassert.strictEqual(checkoutTitleText, 'Checkout: Your Information', 'Failed accessing checkout page');\n// fill in checkout information\nlet firstNameInput = await driver.findElement(By.css('[data-test=\"firstName\"]'));\nlet lastNameInput = await driver.findElement(By.css('[data-test=\"lastName\"]'));\nlet postalCodeInput = await driver.findElement(By.css('[data-test=\"postalCode\"]'));\nlet continueButton = await driver.findElement(By.css('[data-test=\"continue\"]'));\nawait firstNameInput.sendKeys('Firstname');\nawait lastNameInput.sendKeys('Lastname');\nawait postalCodeInput.sendKeys('12345');\nawait continueButton.click();\n// wait 1 second for the page to load\nawait driver.sleep(1000);\n// assert checkout overview page is displayed\nlet checkoutOverviewTitle = await driver.findElement(By.css('[data-test=\"title\"]'));\nlet checkoutOverviewText = await checkoutOverviewTitle.getText();\nassert.strictEqual(checkoutOverviewText, 'Checkout: Overview', 'Failed accessing checkout overview page');\n// check overview data\nlet itemPrice = await driver.findElement(By.css('[data-test=\"inventory-item-price\"]'));\nlet itemPriceText = await itemPrice.getText();\nlet totalPrice = await driver.findElement(By.css('[data-test=\"subtotal-label\"]'));\nlet totalPriceText = await totalPrice.getText();\ntotalPriceText = totalPriceText.replace('Item total: ', '');\nassert.strictEqual(itemPriceText, totalPriceText, 'Total price is incorrect');\n// finish checkout\nlet finishButton = await driver.findElement(By.css('[data-test=\"finish\"]'));\nawait finishButton.click();\n\n// wait 1 second for the page to load\nawait driver.sleep(1000);\n// assert checkout complete page is displayed\nlet checkoutCompleteTitle = await driver.findElement(By.css('[data-test=\"title\"]'));\nlet checkoutCompleteText = await checkoutCompleteTitle.getText();\nassert.strictEqual(checkoutCompleteText, 'Checkout: Complete!', 'Failed accessing checkout complete page');\n// assert success message\nlet successMessage = await driver.findElement(By.css('[data-test=\"complete-header\"]'));\nlet successMessageText = await successMessage.getText();\nassert.strictEqual(successMessageText, 'Thank you for your order!', 'Checkout was not completed');",
-              "err": {},
-              "uuid": "ce62644a-3bdb-495c-a9ba-7c0b81baabfb",
-              "parentUUID": "f9591947-8e23-4b32-957c-4e60e826ef25",
-              "isHook": false,
-              "skipped": false
-            }
-          ],
-          "suites": [],
-          "passes": [
-            "c11fc6e9-33ea-4a5b-a4da-79d8256f2082",
-            "ce62644a-3bdb-495c-a9ba-7c0b81baabfb"
-          ],
-          "failures": [],
-          "pending": [],
-          "skipped": [],
-          "duration": 4787,
-          "root": false,
-          "rootEmpty": false,
-          "_timeout": 60000
-        }
-      ],
-      "passes": [],
-      "failures": [],
-      "pending": [],
-      "skipped": [],
-      "duration": 0,
-      "root": true,
-      "rootEmpty": true,
-      "_timeout": 60000
-    }
+    false
   ],
   "meta": {
     "mocha": {

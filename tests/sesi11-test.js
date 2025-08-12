@@ -1,16 +1,21 @@
-const { Builder, By, until } = require('selenium-webdriver'); // selenium
-const assert = require('assert/strict'); // assert
-const firefox = require('selenium-webdriver/firefox'); // browser
-const pageLogin = require('../pages/page_login'); // pom login
-const pageInventory = require('../pages/page_inventory'); // pom inventory
+import { Builder, By, until } from 'selenium-webdriver'; // selenium
+import assert from 'assert'; // assert
+import firefox from 'selenium-webdriver/firefox.js'; // browser
+
+import fs from 'fs'; // file system (screenshot)
+import { PNG } from 'pngjs'; // encode decode png
+import pixelmatch from 'pixelmatch'; // compare img
+
+import pageLogin from '../pages/page_login.js'; // pom login
+import pageInventory from '../pages/page_inventory.js'; // pom inventory
 
 describe('Saucedemo Test', () => {
     let driver;
 
     beforeEach(async () => {
-        options = new firefox.Options();
+        let options = new firefox.Options();
         options.addArguments('--incognito');
-        options.addArguments('--headless');
+        // options.addArguments('--headless');
         driver = await new Builder().forBrowser('firefox').setFirefoxOptions(options).build();
 
         await driver.get('https://www.saucedemo.com');
@@ -21,7 +26,7 @@ describe('Saucedemo Test', () => {
         let buttonLogin = await driver.findElement(pageLogin.buttonLogin);
 
         // actions
-        await inputUsername.sendKeys('standard_user');
+        await inputUsername.sendKeys('visual_user');
         await inputPassword.sendKeys('secret_sauce');
         await buttonLogin.click();
 
@@ -36,6 +41,35 @@ describe('Saucedemo Test', () => {
             assert.strictEqual(itemDisplayed, true, 'Item is not displayed');
         } catch (error) {
             assert.fail('Login failed or item not displayed: ' + error.message);
+        }
+    });
+
+    it.only('Check Inventory Page Visual', async () => {
+        // take a screenshot
+        let ss = await driver.takeScreenshot();
+        let imgBuffer = Buffer.from(ss, 'base64');
+        fs.writeFileSync('current.png', imgBuffer);
+
+        // check baseline
+        if (!fs.existsSync('baseline.png')) {
+            fs.copyFileSync('current.png', 'baseline.png');
+            console.log('Baseline screenshot saved');
+        }
+
+        // compare
+        let img1 = PNG.sync.read(fs.readFileSync('baseline.png'));
+        let img2 = PNG.sync.read(fs.readFileSync('current.png'));
+        let { width, height } = img1;
+        let differ = new PNG({ width, height });
+
+        let numDiffPixels = pixelmatch(img1.data, img2.data, differ.data, width, height, { threshold: 0.1 });
+
+        fs.writeFileSync('differ.png', PNG.sync.write(differ));
+
+        if (numDiffPixels > 0) {
+            console.log(`Visual differences found! Pixels different: ${numDiffPixels}`);
+        } else {
+            console.log('No visual differences found.');
         }
     });
 
